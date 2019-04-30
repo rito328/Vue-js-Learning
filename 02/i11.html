@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <p>
+    {{ items[0].name }}: {{ items[0].price }} × {{ items[0].quantity }}
+  </p>
+  <p>
+    小計： {{ totalPrice | numberWithDelimiter }}円
+  </p>
+  <p>
+    合計（税込）{{ totalPriceWithTax | numberWithDelimiter }}円
+  </p>
+  <p v-bind:class="errorMessageClass">
+    {{ 1000 | numberWithDelimiter }}以上からご購入いただけます
+  </p>
+</div>
+
+<script>
+    var items = [
+        {
+            name: '鉛筆',
+            price: 300,
+            quantity: 0
+        },{
+            name: 'ノート',
+            price: 400,
+            quantity: 0
+        },{
+            name: '消しゴム',
+            price: 500,
+            quantity: 0
+        },
+    ];
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            items: items
+        },
+        filters: {
+            numberWithDelimiter: function (value) {
+                if (!value) {
+                    return '0'
+                }
+                return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+            }
+        },
+        computed: {
+            totalPrice: function () {
+                return this.items.reduce(function (sum, item) {
+                    return sum + (item.price * item.quantity);
+                }, 0)
+            },
+            totalPriceWithTax: function () {
+                return Math.floor(this.totalPrice * 1.08)
+            },
+            canBuy: function () {
+                return this.totalPrice >= 1000
+            },
+            errorMessageClass: function() {
+                return {
+                    error: !this.canBuy
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

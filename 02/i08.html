@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <p>
+    {{ items[0].name }}: {{ items[0].price }} × {{ items[0].quantity }} = {{ items[0].price * items[0].quantity }}
+  </p>
+  <p>フィルタ処理例 {{ items[0].price * items[0].quantity | numberWithDelimiter }}</p>
+  <p>
+    合計 {{ totalPrice | numberWithDelimiter }} （税込み {{ totalPriceWithTax | numberWithDelimiter }}）
+  </p>
+</div>
+
+<script>
+    console.assert(typeof Vue !== 'undefined');
+    var items = [
+        {
+            name: '鉛筆',
+            price: 300,
+            quantity: 5
+        },{
+            name: 'ノート',
+            price: 400,
+            quantity: 2
+        },{
+            name: '消しゴム',
+            price: 500,
+            quantity: 1
+        },
+    ];
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            items: items
+        },
+        filters: {
+            numberWithDelimiter: function (value) {
+                if (!value) {
+                    return '0'
+                }
+                return value.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+            }
+        },
+        computed: {
+            totalPrice: function () {
+                return this.items.reduce(function (sum, item) {
+                    return sum + (item.price * item.quantity);
+                }, 0)
+            },
+            totalPriceWithTax: function () {
+                return Math.floor(this.totalPrice * 1.08)
+            }
+        }
+    });
+
+    vm.$watch(function() {
+        // 鉛筆の個数
+        return this.items[0].quantity
+    }, function(quantity) {
+        // このコールバックは、鉛筆の購入個数が変更されたら呼ばれます
+        console.log(quantity)
+    })
+</script>
+</body>
+</html>

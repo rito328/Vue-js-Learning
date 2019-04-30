@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+  <p>
+    {{ items[0].name }}
+  </p>
+</div>
+
+<script>
+  console.assert(typeof Vue !== 'undefined');
+  var items = [
+      {
+          name: '鉛筆',
+          price: 300,
+          quantity: 0
+      },{
+          name: 'ノート',
+          price: 400,
+          quantity: 0
+      },{
+          name: '消しゴム',
+          price: 500,
+          quantity: 0
+      },
+  ];
+
+  var vm = new Vue({
+      el: '#app',
+      data: {
+          items: items
+      }
+  });
+
+  vm.$watch(function() {
+      // 鉛筆の個数
+      return this.items[0].quantity
+  }, function(quantity) {
+      // このコールバックは、鉛筆の購入個数が変更されたら呼ばれます
+      console.log(quantity)
+  })
+</script>
+</body>
+</html>

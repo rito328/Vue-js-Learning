@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <router-link to="/top">TOP</router-link>
+  <router-link to="/users">USERS</router-link>
+  <router-view></router-view>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  var router = new VueRouter({
+      routes: [
+          {
+              path: '/top',
+              component: {
+                  template: '<div>TOPページです</div>'
+              }
+          },
+          {
+              path: '/users',
+              component: {
+                  template: '<div>ユーザー一覧ページです</div>'
+              }
+          }
+      ]
+  })
+
+  var app = new Vue({
+      router: router
+  }).$mount('#app')
+</script>
+</body>
+</html>

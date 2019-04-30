@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="fruits-component">
+  <ol>
+    <fruits-item-name v-for="fruit in fruitsItem" :key="fruit.name" :fruits-item="fruit"></fruits-item-name>
+  </ol>
+</div>
+
+
+<script>
+  Vue.component('fruits-item-name', {
+      props: {
+          fruitsItem: {       // テンプレートの中ではケバブケース
+              type: Object,   // オブジェクトかどうか
+              required: true  // このコンポーネントには必須なのでtrue
+          }
+      },
+      template: '<li>{{ fruitsItem.name }}</li>'
+  });
+
+  new Vue({
+      el: '#fruits-component',
+      data: {
+          fruitsItem: [
+              {name: '梨'},
+              {name: 'いちご'}
+          ]
+      }
+  })
+
+</script>
+</body>
+</html>

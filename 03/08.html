@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app">
+  <input-date-with-today></input-date-with-today>
+</div>
+
+
+<script>
+  Vue.component('input-date-with-today', {
+      render: function(createElement) {
+          return createElement(
+              'input',
+              {
+                  attrs: {
+                      type: 'date',
+                      value: new Date().toISOString().substring(0, 10)
+                  }
+              }
+          )
+      }
+  });
+
+  new Vue({ el: '#app'})
+</script>
+</body>
+</html>

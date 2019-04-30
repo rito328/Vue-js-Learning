@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <router-link to="/top">TOP</router-link>
+  <router-link :to="{ name: 'user', params: { userId: 123 } }">ユーザー詳細ページ</router-link>
+  <router-view></router-view>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  var router = new VueRouter({
+      routes: [
+          {
+              path: '/top',
+              component: {
+                  template: '<div>TOPページです</div>'
+              }
+          },
+          {
+              path: '/user/:userId',
+              name: 'user',
+              component: {
+                  template: '<div>ユーザーIDは　{{ $route.params.userId }} です</div>'
+              },
+              // ルート単位のフック関数
+              // ルーティングが成立しないとここまでこない
+              // 不正パラメータはいけそう。でもパラメータ無しの場合 /user や /user/ はここまでこない
+              /*
+              beforeEnter: function (to, from, next) {
+                  const pattern = /^\d{3}$/;
+                  regexp = new RegExp(pattern);
+                  if (!regexp.test(to.params.userId)) {
+                      next('/top')
+                  } else {
+                      next()
+                  }
+              }
+              */
+          }
+      ]
+  });
+
+  // この記述だと初回でいきなり繊維する
+  /*
+  router.push({
+      name: 'user',
+      params: {
+          userId: 234
+      }
+  });
+  */
+
+
+  // グローバルのフック関数（全体にかかる）
+  /*
+  router.beforeEach(function (to, from, next) {
+      console.log(to);
+     if (to.path === '/user' && to.params.userId === '') {
+         next('/top')
+     } else {
+         next()
+     }
+  });
+  */
+
+  var app = new Vue({
+      router: router
+  }).$mount('#app')
+</script>
+</body>
+</html>

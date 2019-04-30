@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+<div id="app">
+  <item-desc v-bind:item-name='myItem'></item-desc>
+</div>
+
+<script>
+  Vue.component('item-desc', {
+      props: {
+          itemName: {
+              type: String
+          }
+      },
+      template: '<p>{{ itemName }}は便利です</p>'
+  });
+
+  new Vue({
+      el: '#app',
+      data: { myItem: 'pen'}
+  });
+</script>
+</body>
+</html>

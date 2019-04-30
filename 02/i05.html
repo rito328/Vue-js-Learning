@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<button id="b-button" v-bind:title="loggedInButton">購入</button>
+
+<script>
+  var vm = new Vue({
+      el: '#b-button',
+      data: {
+          loggedInButton: 'ログイン済みのため購入できます',
+      }
+  });
+</script>
+</body>
+</html>

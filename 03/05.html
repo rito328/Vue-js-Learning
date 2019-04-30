@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="fruits-list"></div>
+
+
+<script>
+  var FruitsTitle = Vue.extend({
+      template: '<h1>フルーツ一覧</h1>'
+  })
+  new FruitsTitle().$mount('#fruits-list')
+</script>
+</body>
+</html>
