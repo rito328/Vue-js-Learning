@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>4.4.4 登録ページの実装</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <nav>
+    <router-link to="/top">トップページ</router-link>
+    <router-link to="/users">ユーザー一覧ページ</router-link>
+  </nav>
+  <router-view></router-view>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+
+<!-- Template : ユーザー一覧 -->
+<script type="text/x-template" id="user-list">
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    <div v-for="user in users" :key="user.id">
+      <h2>{{ user.name }}</h2>
+    </div>
+  </div>
+</script>
+<!-- Template : ユーザー詳細 -->
+<script type="text/x-template" id="user-detail">
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    <div v-if="user">
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.description }}</p>
+    </div>
+  </div>
+</script>
+<!-- Template : ユーザー登録 -->
+<script type="text/x-template" id="user-create">
+  <div>
+    <div class="sending" v-if="sending">Sending...</div>
+    <div>
+      <h2>新規ユーザー登録</h2>
+      <div>
+        <label>名前： </label>
+        <input type="text" v-model="user.name">
+      </div>
+      <div>
+        <label>説明文： </label>
+        <textarea v-model="user.description"></textarea>
+      </div>
+    </div>
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    <div>
+      <input type="button" @click="createUser" value="送信">
+    </div>
+  </div>
+</script>
+
+<!-- Template :  -->
+<!--
+<script type="text/x-template" id="">
+
+</script>
+-->
+
+<script>
+  // SPAではページ遷移をした際に、APIを通じてデータをUIに表示する場面が頻繁にあります。
+  // Vue RouterでAjaxによる非同期通信でデータ通信を行う場合は、Vue.jsのコンポーネントのcreatedとwatchを使って実装するのが一般的
+
+  var userData = [
+      {
+          id: 1,
+          name: 'User_01',
+          description: 'User_01の詳細です'
+      },{
+          id: 2,
+          name: 'User_02',
+          description: 'User_02の詳細です'
+      }
+  ];
+
+  /*************
+   * ユーザ登録
+   *************/
+  // 擬似的にAPI経由で情報を更新したようにする
+  // 実際のWEBアプリケーションではServerへPOSTリクエストを行う
+  var postUser = function (params, callback) {
+      setTimeout(function () {
+          // id は追加されるごとに自動的にincrementされていく
+          //params.id = userData.length + 1;
+          userData.push({
+              id: userData.length + 1,
+              name: params.name,
+              description: params.description
+          });
+          callback(null, params);
+      }, 1000)
+  };
+
+  // 新規ユーザ作成コンポーネント
+  var UserCreate = {
+      template: '#user-create',
+      data: function () {
+          return {
+              sending: false,
+              user: this.defaultUser(),
+              error: null
+          }
+      },
+      created: function () {
+      },
+      methods: {
+          defaultUser: function () {
+              return {
+                  name: '',
+                  description: ''
+              }
+          },
+          createUser: function () {
+              // 入力パラメータのバリデーション
+              if (this.user.name.trim() === '') {
+                  this.error = 'Name は必須です';
+                  return;
+              }
+              if (this.user.description.trim() === '') {
+                  this.error = 'Description は必須です';
+                  return;
+              }
+              postUser(this.user, (function (err, user) {
+                  this.sending = true;
+                  if (err) {
+                      this.error = err.toString();
+                  } else {
+                      this.error = null;
+                      // デフォルトでフォームをリセット
+                      this.user = this.defaultUser();
+                      alert('ユーザが登録されました');
+                      console.log(userData);
+                      // ユーザ一覧ページに戻る
+                      this.$router.push('/users');
+                  }
+              }).bind(this))
+          }
+      }
+  };
+
+  /*************
+   * ユーザ詳細
+   *************/
+  // 擬似的にAPI経由で情報を取得したようにする
+  var getUser = function (userId, callback) {
+    setTimeout(function () {
+        var filteredUsers = userData.filter(function (user) {
+            return user.id === parseInt(userId, 10)
+        });
+        callback(null, filteredUsers && filteredUsers[0])
+    }, 1000)
+  };
+
+  // 詳細ページのコンポーネント
+  var UserDetail = {
+      template: '#user-detail',
+      // 初期値のセット
+      data: function () {
+          return {
+              loading: false,
+              user: null,
+              error: null
+          }
+      },
+      created: function () {
+          this.fetchData()
+      },
+      watch: {
+          '$route': 'fetchData'
+      },
+      methods: {
+          fetchData: function () {
+              this.loading = true;
+              // this.$route.params.userId に現在のURL上のパラメータに対応したuserIdが格納される
+              getUser(this.$route.params.userId, (function (err, user) {
+                  this.loading = false;
+                  if (err) {
+                      this.error = err.toString()
+                  } else {
+                      this.user = user
+                  }
+              }).bind(this))
+          }
+      }
+  };
+
+  /*************
+   * ユーザ一覧
+   *************/
+  var getUsers = function(callback) {
+      setTimeout(function () {
+          callback(null, [
+              {
+                  id: 1,
+                  name: 'user_01'
+              },{
+                  id: 2,
+                  name: 'user_02'
+              }
+          ])
+      }, 1000)
+  };
+
+  var UserList = {
+      template: '#user-list',
+      data: function() {
+          return {
+              loading: false,
+              users: function() { return [] }, // 初期値なので空
+              error: null
+          }
+      },
+      // 初期化時にデータを取得する
+      created: function () {
+          this.fetchData()
+      },
+      // $routeの変更をwatchすることで、ルーティングが変更された時に再度データを取得する
+      watch: {
+          '$route': 'fetchData'
+      },
+      methods: {
+          fetchData: function () {
+              this.loading = true;
+              getUsers((function (err, users) {
+                  this.loading = false;
+                  if (err) {
+                      this.error = err.toString()
+                  } else {
+                      this.users = users
+                  }
+              }).bind(this))
+          }
+      }
+  };
+
+
+
+  var router = new VueRouter({
+      routes: [
+          {
+              path: '/top',
+              component: {
+                  template: '<div>トップページです</div>'
+              }
+          }, {
+              path: '/users',
+              component: UserList
+          }, { // ルート定義の追加（詳細ページよりも前に定義する必要がある）
+              path: '/user/new',
+              component: UserCreate
+          }, {
+              path: '/user/:userId',
+              component: UserDetail
+          }
+      ]
+  });
+
+  var app = new Vue({
+      router:router
+  }).$mount('#app');
+</script>
+</body>
+</html>

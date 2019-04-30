@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>4.4.1-4.4.2 基本ページの実装</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <nav>
+    <router-link to="/top">トップページ</router-link>
+    <router-link to="/users">ユーザー一覧ページ</router-link>
+  </nav>
+  <router-view></router-view>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script type="text/x-template" id="user-list">
+  <div>
+    <div class="loading" v-if="loading">読み込み中...</div>
+    <div v-if="error" class="error">
+      {{ error }}
+    </div>
+    <div v-for="user in users" :key="user.id">
+      <h2>{{ user.name }}</h2>
+    </div>
+  </div>
+</script>
+<!--
+<script type="text/x-template" id="">
+
+</script>
+-->
+
+<script>
+  // SPAではページ遷移をした際に、APIを通じてデータをUIに表示する場面が頻繁にあります。
+  // Vue RouterでAjaxによる非同期通信でデータ通信を行う場合は、Vue.jsのコンポーネントのcreatedとwatchを使って実装するのが一般的
+    var getUsers = function(callback) {
+        setTimeout(function () {
+            callback(null, [
+                {
+                    id: 1,
+                    name: 'user_01'
+                },{
+                    id: 2,
+                    name: 'user_02'
+                }
+            ])
+        }, 1000)
+    };
+
+  var UserList = {
+      template: '#user-list',
+      data: function() {
+          return {
+              loading: false,
+              users: function() { return [] }, // 初期値なので空
+              error: null
+          }
+      },
+      // 初期化時にデータを取得する
+      created: function () {
+          this.fetchData()
+      },
+      // $routeの変更をwatchすることで、ルーティングが変更された時に再度データを取得する
+      watch: {
+          '$route': 'fetchData'
+      },
+      methods: {
+          fetchData: function () {
+              this.loading = true;
+              getUsers((function (err, users) {
+                  this.loading = false;
+                  if (err) {
+                      this.error = err.toString()
+                  } else {
+                      this.users = users
+                  }
+              }).bind(this))
+          }
+      }
+  };
+
+
+
+  var router = new VueRouter({
+      routes: [
+          {
+              path: '/top',
+              component: {
+                  template: '<div>トップページです</div>'
+              }
+          },{
+              path: '/users',
+              component: UserList
+          }
+      ]
+  });
+
+  var app = new Vue({
+      router:router
+  }).$mount('#app');
+</script>
+</body>
+</html>

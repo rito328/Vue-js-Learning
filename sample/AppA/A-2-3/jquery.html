@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/jquery@3.3.1"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p id="loading">ロードしています...</p>
+    </div>
+    <script>
+        var $loading = $('#loading')
+        var $app = $('#app')
+        setTimeout(() => {
+            var $loaded = $('<p>ロードが完了しました</p>')
+            $loading.remove()
+            $app.append($loaded)
+        }, 1000)
+    </script>
+</body>
+
+</html>

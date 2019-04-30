@@ -1,0 +1,30 @@
+<script src="https://unpkg.com/vue@2.5.17"></script>
+<!-- 親がfruits-componentにマウントされたインスタンス -->
+<div id="fruits-component">
+  <ol>
+    <!-- v-forで繰り返した各furitをprops（fruits-item）に与えている -->
+    <fruits-item-name v-for="fruit in fruitsItems" :key="fruit.name" :fruits-item="fruit"></fruits-item-name>
+  </ol>
+</div>
+
+<script>
+Vue.component('fruits-item-name', {
+  props: {
+    fruitsItem: { // テンプレート中ではケバブケース
+      type: Object, // オブジェクトかどうか
+      required: true // このコンポーネントには必須なのでtrue
+    }
+  },
+  template: '<li>{{fruitsItem.name}}</li>'
+})
+
+new Vue({
+  el: '#fruits-component',
+  data: { // 親では配列だがv-forでObjectとして渡している
+    fruitsItems: [
+      {name: '梨'},
+      {name: 'イチゴ'}
+    ]
+  }
+})
+</script>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+
+<body>
+    <form id="app" @submit="confirm" method="post" action="/questionaire">
+        <p>
+            <label for="name">名前</label>
+            <input type="text" name="name" id="name" v-model="name">
+        </p>
+        <p>
+            <label for="age">年齢</label>
+            <input type="number" name="age" id="age" v-model.number="age">
+        </p>
+        <p>
+            <input type="submit" value="送信">
+        </p>
+    </form>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    name: null,
+                    age: null
+                }
+            },
+            methods: {
+                confirm: function (e) {
+                    var message = [
+                        '名前: ' + this.name,
+                        '年齢: ' + this.age,
+                        'この内容で送信しますか?'
+                    ].join('\n')
+                    if (!window.confirm(message)) {
+                        e.preventDefault()
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

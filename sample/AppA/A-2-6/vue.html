@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue@2.5.17"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p class="message" :style="{color: color}">メッセージ</p>
+        <button @click="changeColor('red')">赤色に変える</button>
+        <button @click="changeColor('yellow')">黄色に変える</button>
+        <button @click="changeColor('blue')">青色に変える</button>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: function () {
+                return {
+                    color: ''
+                }
+            },
+            methods: {
+                changeColor: function (color) {
+                    this.color = color
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
