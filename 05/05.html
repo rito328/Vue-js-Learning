@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.2.2 名前つきスロット</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <my-page>
+    <h1 slot="header">This is my page</h1>
+    <p>
+      庭に赤い花が咲いた
+    </p>
+    <p slot="footer">This is footer</p>
+  </my-page>
+</div>
+
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var MyPage = {
+      template: `
+          <div>
+              <header>
+                  <slot name="header"></slot>
+              </header>
+              <main>
+                  <slot></slot>
+              </main>
+              <footer>
+                  <slot name="footer"></slot>
+              </footer>
+          </div>
+      `
+  }
+
+  new Vue({
+      el: '#app',
+      components: {
+          MyPage: MyPage
+      }
+  })
+</script>
+</body>
+</html>

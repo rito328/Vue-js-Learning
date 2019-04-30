@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>カスタムトランジッション</title>
+  <link href="../reset.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css">
+</head>
+<body>
+
+<div id="app">
+  <p><input type="text" v-model="animationClass"></p>
+  <button @click="isShown = !isShown">表示の切り替え</button>
+  <!--
+    トランジッションアンメーションで付け替えするクラスを変更する為に
+    enter-active-class プロパティと leave-active-class プロパティを指定する
+  -->
+  <transition
+    :enter-active-class="activeClass"
+    :leave-active-class="activeClass"
+  >
+    <p v-show="isShown">Hello, World!</p>
+
+  </transition>
+</div>
+
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/vue-router"></script>
+<script>
+  new Vue({
+      el: '#app',
+      data: function () {
+          return {
+              animationClass: 'bounce',
+              isShown: false
+          }
+      },
+      computed: {
+          activeClass: function () {
+              // 設定するクラスの値を計算する
+              // インプットフィールドの入力に応じて再計算される
+              return this.animationClass + ' animated'
+          }
+      }
+  })
+
+</script>
+</body>
+</html>

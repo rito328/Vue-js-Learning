@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.2.3 スコープつきスロット</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <!--
+  <todo-list :todos="todos">
+    <li slot-scope="slotProps" v-if="slotProps.todos.isCompleted" :key="todo.id">
+      {{ slotProps.todo.text }}
+    </li>
+  </todo-list>
+  -->
+
+  <todo-list :todos="todos">
+    <li slot-scope="{ todo }" v-if="todo.isCompleted">
+      {{ todo.text }}
+    </li>
+  </todo-list>
+</div>
+
+<script src="https://unpkg.com/vue@2.5.17"></script>
+<script>
+  var TodoList = {
+      props: {
+          todos: {
+              type: Array,
+              required: true
+          }
+      },
+      template: `
+          <ul>
+              <template v-for="todo in todos">
+                  <slot :todo="todo">
+                      <li :key="todo.id">
+                          {{ todo.text }}
+                      </li>
+                  </slot>
+              </template>
+          </ul>
+      `
+  };
+
+  new Vue({
+      el: '#app',
+      data: function () {
+          return {
+              todos: [
+                  { id: 1, text: 'AAA', isCompleted: true },
+                  { id: 2, text: 'BBB', isCompleted: false },
+                  { id: 3, text: 'CCC', isCompleted: true },
+                  { id: 4, text: 'DDD', isCompleted: false },
+              ]
+          }
+      },
+      components: {
+          TodoList: TodoList
+      }
+  })
+
+</script>
+</body>
+</html>

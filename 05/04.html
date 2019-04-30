@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="../reset.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app">
+  <!-- コンテンツ有りでコンポーネントを設置する -->
+  <my-button>送信する</my-button>
+
+  <!-- コンテンツ無しでコンポーネントを設置する -->
+  <my-button></my-button>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+  var MyButton = {
+      // 親コンポーネントで渡されたコンテンツに差し替えられる
+      template: `
+          <button>
+              <slot>OK</slot>
+          </button>
+      `
+  }
+
+  new Vue({
+      el: '#app',
+      components: {
+          MyButton: MyButton
+      }
+  })
+
+</script>
+</body>
+</html>

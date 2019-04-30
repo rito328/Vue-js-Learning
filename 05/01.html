@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>5.1.3 fadeトランジッションの実装</title>
+  <link href="../reset.css" rel="stylesheet">
+  <style>
+    .v-enter-active,
+    .v-leave-active {
+      /* アニメーションの時間・イージングなどを設定 */
+      transition: opacity 500ms ease-out;
+    }
+
+    /* フェードイン */
+    .v-enter {
+      /* フェードインの初期状態 */
+      opacity: 0;
+    }
+
+    .v-enter-to {
+      /* フェードインの終了状態 */
+      opacity: 1;
+    }
+
+    /* フェードアウト */
+    .v-leave {
+      /* フェードアウトの初期状態 */
+      opacity: 1;
+    }
+
+    .v-leave-to {
+      /* フェードアウトの終了状態 */
+      opacity: 0;
+    }
+
+
+    /*
+     * transitionタグにname属性を設定すればクラス名が任意に変更できる
+     */
+    .sample-enter-active,
+    .sample-leave-active {
+      /* アニメーションの時間・イージングなどを設定 */
+      transition: opacity 500ms ease-out;
+    }
+
+    /* フェードイン */
+    .sample-enter {
+      /* フェードインの初期状態 */
+      opacity: 0;
+    }
+
+    .sample-enter-to {
+      /* フェードインの終了状態 */
+      opacity: 1;
+    }
+
+    /* フェードアウト */
+    .sample-leave {
+      /* フェードアウトの初期状態 */
+      opacity: 1;
+    }
+
+    .sample-leave-to {
+      /* フェードアウトの終了状態 */
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <button @click="isShown = !isShown">表示の切り替え</button>
+  <transition name="sample">
+    <p v-show="isShown">Hello, World!</p>
+  </transition>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+  new Vue({
+      el: '#app',
+      data: function () {
+          return {
+              isShown: false
+          }
+      }
+  })
+
+</script>
+</body>
+</html>
