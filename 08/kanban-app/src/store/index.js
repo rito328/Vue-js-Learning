@@ -9,17 +9,23 @@ Vue.use(Vuex)
 // 状態`Auth`と状態`Board`をVuexのstateで一元管理できるように定義する
 
 const state = {
-  auth: {         // 状態`Auth`
-    token: null,  // `token`は nullで初期化
-    userId: null  // 'userId'は nullで初期化
+  // 状態`Auth`
+  auth: {
+    // `token`は nullで初期化
+    token: null,
+    // 'userId'は nullで初期化
+    userId: null
   },
-  board: {        // 状態`Board`
-    lists: []     // 'lists'は空配列で初期化
+  // 状態`Board`
+  board: {
+    // 'lists'は空配列で初期化
+    lists: []
   }
 }
 
 export default new Vuex.Store({
-  state,    // 定義したstateを`state`オプションに指定
+  // 定義したstateを`state`オプションに指定
+  state,
   getters,
   actions,
   mutations,
