@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A.2.2 表示の切り替え</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    crossorigin="anonymous"></script>
+  <link href="../reset.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app_jq">
+  <p id="on">オン</p>
+  <p id="off">オフ</p>
+  <button>ON/OFF切り替え</button>
+</div>
+
+<div id="app">
+  <p v-show="isOn">オン</p>
+  <p v-show="!isOn">オフ</p>
+  <button @click="toggle">ON/OFF切り替え</button>
+</div>
+
+<script>
+  // jQuery
+  var app_jq = $('#app_jq')
+  var $on = app_jq.find('#on')
+  var $off = app_jq.find('#off')
+  var isOn = false
+  $on.hide()
+
+  app_jq.find('button').on('click', function() {
+      isOn = !isOn
+      if (isOn) {
+          $on.show()
+          $off.hide()
+      } else {
+          $on.hide()
+          $off.show()
+      }
+  })
+
+  // Vue
+  new Vue({
+      el: '#app',
+
+      data () {
+          return {
+              isOn: false
+          }
+      },
+
+      methods: {
+          toggle() {
+              this.isOn = !this.isOn
+          }
+      }
+  })
+</script>
+</body>
+</html>

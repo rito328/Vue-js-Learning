@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A.2.6 スタイルの変更</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    crossorigin="anonymous"></script>
+  <link href="../reset.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app_jq">
+  <p class="message">メッセージ</p>
+  <button data-color-name="red">赤色に変える</button>
+  <button data-color-name="yellow">黄色に変える</button>
+  <button data-color-name="blue">青色に変える</button>
+</div>
+
+<div id="app">
+  <p class="message" :style="colorStyles">メッセージ</p>
+  <button @click="changeColor('red')">赤色に変える</button>
+  <button @click="changeColor('yellow')">黄色に変える</button>
+  <button @click="changeColor('blue')" data-color-name="blue">青色に変える</button>
+</div>
+
+<script>
+    // jQuery
+    var $app = $('#app_jq')
+    var $message = $app.find('.message')
+    var $button = $app.find('button')
+
+    $button.on('click', function (e) {
+        $message.css('color', $(e.currentTarget).attr('data-color-name'))
+    })
+
+
+    // Vue
+    new Vue({
+        el: '#app',
+
+        data() {
+            return {
+                color: ''
+            }
+        },
+
+        computed: {
+          colorStyles: function () {
+              return {
+                  color: this.color
+              }
+          }
+        },
+
+        methods: {
+            changeColor: function (color) {
+                this.color = color
+            }
+        }
+
+    })
+</script>
+</body>
+</html>

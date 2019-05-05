@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A.2.1 イベントリスナー</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    crossorigin="anonymous"></script>
+  <link href="../reset.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app_jq">
+  <button id="btn_jq">Click</button>
+</div>
+
+<div id="app">
+  <!--<button @click="sayHi">button</button>-->
+  <button @click="sayHi(123, $event)">button</button>
+</div>
+
+<script>
+  // jQuery
+  $('#btn_jq').on('click', function (e) {
+      console.log(e)
+      console.log(this)
+      //alert('btn')
+  })
+
+  // Vue
+  new Vue({
+      el: '#app',
+
+      methods: {
+          sayHi: (param, e) => {
+              console.log(param) // => 123
+              console.log(e)
+              console.log(this)
+          }
+      }
+  })
+</script>
+</body>
+</html>

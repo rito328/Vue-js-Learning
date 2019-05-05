@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>A.2.3 要素の挿入・削除</title>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+    crossorigin="anonymous"></script>
+  <link href="../reset.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="app_jq">
+  <p id="loading">ロードしています...</p>
+</div>
+
+<div id="app">
+  <p v-if="isLoading">ロードしています...</p>
+  <p v-else>ロードが完了しました</p>
+</div>
+
+<script>
+    // jQuery
+    var $app = $('#app_jq')
+
+    var $loading = $app.find('#loading')
+
+    setTimeout(() => {
+        var $loaded = $('<p>ロードが完了しました</p>')
+        $loading.remove()
+        $app.append($loaded)
+    }, 1000)
+
+
+
+
+    // Vue
+    new Vue({
+        el: '#app',
+
+        data () {
+            return {
+                isLoading: true
+            }
+        },
+        mounted: function () {
+            setTimeout(() => {
+                this.isLoading = false
+            }, 1000)
+        }
+
+    })
+</script>
+</body>
+</html>
